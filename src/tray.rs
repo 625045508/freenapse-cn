@@ -724,7 +724,7 @@ impl App {
         }
         if !self.notified_update {
             self.notified_update = true;
-            self.notify("freenapse update", &format!("有新版 {v} 可用，托盘菜单里有链接。"), false);
+            self.notify("freenapse 更新", &format!("有新版 {v} 可用，托盘菜单里有链接。"), false);
         }
         self.update_tag = Some(v);
         self.update_tray();
