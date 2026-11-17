@@ -1572,8 +1572,9 @@ impl Ui {
         let cr = rect(s(NAV_PAD), h - s(FOOTER_H) - ch - s(4), sw - s(2 * NAV_PAD), ch);
         card(dc, &cr, s(4));
         let online = self.connected && !self.asleep;
-        let model = if self.spec.is_placeholder() { "还没有鼠标" } else { self.spec.name.trim_start_matches("Razer ").split(" (").next().unwrap_or("鼠标") }
-            .to_string();
+        let model =
+            if self.spec.is_placeholder() { "还没有鼠标" } else { self.spec.name.trim_start_matches("Razer ").split(" (").next().unwrap_or("鼠标") }
+                .to_string();
         text(dc, &rect(cr.left + s(16), cr.top + s(12), cr.right - cr.left - s(52), s(20)), &model, self.fonts.bold, TEXT, DT_ROW);
         let (licon, lcol) = match (self.connected, self.asleep, self.wireless) {
             (false, _, _) => (Icon::Warning, DIM),
@@ -3026,12 +3027,8 @@ impl Ui {
                         "还没有人验证过能向 {model}（产品 ID 0x{:04x}）写入。\n\n如果继续，freenapse 会把你做的改动发送给这只鼠标。某个设置如果被鼠标理解错了，可能得用雷云改回来。\n\n允许向这只鼠标写入吗？风险自负。",
                         self.spec.product_id
                     );
-                    let answer = MessageBoxW(
-                        self.hwnd,
-                        wide(&text).as_ptr(),
-                        wide("允许向未验证的鼠标写入").as_ptr(),
-                        MB_OKCANCEL | MB_ICONWARNING | MB_DEFBUTTON2,
-                    );
+                    let answer =
+                        MessageBoxW(self.hwnd, wide(&text).as_ptr(), wide("允许向未验证的鼠标写入").as_ptr(), MB_OKCANCEL | MB_ICONWARNING | MB_DEFBUTTON2);
                     if answer != IDOK {
                         return;
                     }
@@ -3492,11 +3489,7 @@ impl Ui {
                 self.connected = false;
                 self.battery = None;
                 self.pending = true;
-                self.set_notice(
-                    "还没写入鼠标",
-                    "鼠标没有连接。改动已记在配置文件里，鼠标接回来后会写入。",
-                    WARN,
-                );
+                self.set_notice("还没写入鼠标", "鼠标没有连接。改动已记在配置文件里，鼠标接回来后会写入。", WARN);
                 false
             }
             Err(HidError::Unverified(_)) => {

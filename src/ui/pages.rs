@@ -611,11 +611,8 @@ fn performance(ui: &Ui, f: &mut Form) {
     f.section_icon("回报率", Some(Icon::Bolt));
     let rates: &[u16] = ui.spec.polling_rates;
     let sel = rates.iter().position(|r| *r == cfg.polling.rate).unwrap_or(0);
-    let sub = if rates.iter().any(|r| *r > 1000) {
-        "每秒上报次数。4000 和 8000 需要 HyperPolling 接收器，也更费电"
-    } else {
-        "每秒上报次数"
-    };
+    let sub =
+        if rates.iter().any(|r| *r > 1000) { "每秒上报次数。4000 和 8000 需要 HyperPolling 接收器，也更费电" } else { "每秒上报次数" };
     f.ticks("回报率（Hz）", sub, &hz_labels(rates), sel, Id::Polling);
 
     f.note("游戏运行时可以切换到自己的回报率、DPI 档位和按键：见“游戏”页。");
@@ -737,7 +734,9 @@ fn games(ui: &Ui, f: &mut Form) {
         })
         .collect();
     // The last tile adds any program (games outside a launcher).
-    tiles.push(TileItem { id: Id::GameBrowse, title: "添加程序".to_string(), sub: "任意 .exe".to_string(), badge: "", art: TileArt::Add, selected: false });
+    tiles.push(TileItem {
+        id: Id::GameBrowse, title: "添加程序".to_string(), sub: "任意 .exe".to_string(), badge: "", art: TileArt::Add, selected: false
+    });
     f.tiles(tiles);
 
     if let Some(g) = cfg.games.get(ui.sel_game).filter(|_| ui.game_open) {
@@ -805,8 +804,7 @@ fn game_settings(ui: &Ui, f: &mut Form, g: &crate::config::GameConfig, rates: &[
     let psel = g.polling.and_then(|p| rates.iter().position(|r| *r == p)).map(|i| i + 1).unwrap_or(0);
     f.chips_wide("游戏时使用的回报率", &polls, Some(psel), Id::GamePolling);
     f.edit("名称", "显示在这里和托盘提示里。按 Enter 保存", &g.label(), false, Id::GameName);
-    let exe_sub =
-        if g.dir.is_empty() { "可执行文件名，例如 cs2.exe。按 Enter 保存" } else { "可选：游戏文件夹里的程序本来就算" };
+    let exe_sub = if g.dir.is_empty() { "可执行文件名，例如 cs2.exe。按 Enter 保存" } else { "可选：游戏文件夹里的程序本来就算" };
     f.edit("程序", exe_sub, &g.exe, false, Id::GameExe);
     if !g.dir.is_empty() {
         f.info("文件夹", &g.dir);
@@ -836,16 +834,7 @@ fn calibration(ui: &Ui, f: &mut Form) {
     }
     f.toggle("非对称抬升", "抬起和落下分开设，而不是一个距离", s.asymmetric, Id::Asym);
     if s.asymmetric {
-        f.slider(
-            "抬起",
-            "到这个档位就停止追踪（从低到高）",
-            ASYM_LIFT_MIN as i32,
-            ASYM_LIFT_MAX as i32,
-            1,
-            s.lift as i32,
-            |v| v.to_string(),
-            Id::Lift,
-        );
+        f.slider("抬起", "到这个档位就停止追踪（从低到高）", ASYM_LIFT_MIN as i32, ASYM_LIFT_MAX as i32, 1, s.lift as i32, |v| v.to_string(), Id::Lift);
         f.slider(
             "落下",
             "到这个档位恢复追踪，低于抬起档位",
@@ -856,7 +845,9 @@ fn calibration(ui: &Ui, f: &mut Form) {
             |v| v.to_string(),
             Id::Land,
         );
-        f.note("和雷云给这只鼠标的“非对称抬升”用同样的滑块（抬起 2..26、落下 1..25，雷云默认 13 / 12）。鼠标能接受这些值但读不回来，所以每次写入都会重写一遍。");
+        f.note(
+            "和雷云给这只鼠标的“非对称抬升”用同样的滑块（抬起 2..26、落下 1..25，雷云默认 13 / 12）。鼠标能接受这些值但读不回来，所以每次写入都会重写一遍。",
+        );
     } else {
         f.slider("抬起距离", "传感器的下限是 1 毫米", 1, 3, 1, s.lift as i32, |v| format!("{v} 毫米"), Id::Lift);
         f.note("智能追踪让传感器自己适应表面。雷云对这只鼠标没有表面校准和鼠标垫预设，freenapse 也没有。");
@@ -867,16 +858,7 @@ fn power(ui: &Ui, f: &mut Form) {
     let cfg = &ui.cfg;
     f.section_icon("电池", Some(Icon::Battery));
     f.battery();
-    f.slider(
-        "电量通知",
-        "电量降到这个水平时托盘程序弹通知",
-        5,
-        50,
-        1,
-        cfg.tray.notify_percent as i32,
-        |v| format!("{v} %"),
-        Id::NotifyPercent,
-    );
+    f.slider("电量通知", "电量降到这个水平时托盘程序弹通知", 5, 50, 1, cfg.tray.notify_percent as i32, |v| format!("{v} %"), Id::NotifyPercent);
 
     f.section_icon("节能", Some(Icon::Power));
     f.slider(
@@ -1280,10 +1262,7 @@ fn macros_section(ui: &Ui, f: &mut Form) {
     let cfg = &ui.cfg;
     f.section_icon("宏", Some(Icon::Keyboard));
     if ui.is_recording() {
-        f.note(&format!(
-            "已录制 {} 秒，共 {} 个事件。按键盘和鼠标按键（它们之间的间隔也会记录），然后点“停止录制”或按 Esc。",
-            ui.rec_secs, ui.rec_count
-        ));
+        f.note(&format!("已录制 {} 秒，共 {} 个事件。按键盘和鼠标按键（它们之间的间隔也会记录），然后点“停止录制”或按 Esc。", ui.rec_secs, ui.rec_count));
         f.buttons(&[("停止录制", Id::MacroStop, true)]);
         return;
     }
@@ -1325,7 +1304,10 @@ fn macros_section(ui: &Ui, f: &mut Form) {
     }
     match (ui.macro_onboard, ui.macro_storage) {
         (Some(true), Some(st)) => f.note(&format!("鼠标里的宏存储：{} / {} 字节可用。步骤也可以在配置文件（[[macros]]）里编辑。", st.available, st.total)),
-        (Some(false), _) => f.note(&format!("这只鼠标没有宏存储空间，宏由托盘程序播放（雷云对它也是这样），最多 {} 个不同绑定。步骤也可以在配置文件（[[macros]]）里编辑。", macros::MAX_SOFT_SLOTS)),
+        (Some(false), _) => f.note(&format!(
+            "这只鼠标没有宏存储空间，宏由托盘程序播放（雷云对它也是这样），最多 {} 个不同绑定。步骤也可以在配置文件（[[macros]]）里编辑。",
+            macros::MAX_SOFT_SLOTS
+        )),
         _ => f.note("步骤也可以在配置文件（[[macros]]）里编辑。"),
     }
 }
@@ -1342,16 +1324,7 @@ fn app(ui: &Ui, f: &mut Form) {
     let cfg = &ui.cfg;
     f.section_icon("托盘程序", Some(Icon::Program));
     f.toggle("开机启动", "登录时启动托盘程序（电池图标、游戏内回报率）", ui.autostart, Id::Autostart);
-    f.slider(
-        "电池刷新",
-        "使用鼠标时，托盘图标多久读一次电量",
-        10,
-        300,
-        10,
-        cfg.tray.poll_seconds as i32,
-        |v| format!("{v} 秒"),
-        Id::PollSeconds,
-    );
+    f.slider("电池刷新", "使用鼠标时，托盘图标多久读一次电量", 10, 300, 10, cfg.tray.poll_seconds as i32, |v| format!("{v} 秒"), Id::PollSeconds);
     f.gap(4);
     f.buttons(&[
         ("打开配置文件", Id::OpenConfig, false),
@@ -1364,13 +1337,7 @@ fn app(ui: &Ui, f: &mut Form) {
     f.section_icon("板载配置", Some(Icon::Layers));
     let (stored, max) = ui.profiles.unwrap_or((1, 1));
     let slots: Vec<String> = (1..=max.clamp(1, 5)).map(|n| n.to_string()).collect();
-    f.chips(
-        "当前使用的配置",
-        "按键和动态灵敏度都会写进这个板载配置",
-        &slots,
-        Some((cfg.profile.active as usize).clamp(1, slots.len()) - 1),
-        Id::Profile,
-    );
+    f.chips("当前使用的配置", "按键和动态灵敏度都会写进这个板载配置", &slots, Some((cfg.profile.active as usize).clamp(1, slots.len()) - 1), Id::Profile);
     if max <= 1 {
         f.note("这只鼠标只报告一个板载配置，所以没有可切换的。这个选择器是给能存多套配置的雷蛇鼠标准备的。");
     } else {
@@ -1531,18 +1498,8 @@ fn devices(ui: &Ui, f: &mut Form) {
 
     let groups: [(&str, Icon, Status, &str); 3] = [
         ("已验证", Icon::Check, Status::Verified, "在这只鼠标上逐项写入并读回验证过。freenapse 会直接写入这些鼠标，不再询问。"),
-        (
-            "测试中",
-            Icon::Warning,
-            Status::Testing,
-            "有用户读回验证了部分设置。要写入需要用户自己允许：接上鼠标后用上面的开关。",
-        ),
-        (
-            "只读",
-            Icon::Info,
-            Status::ReadOnly,
-            "已知产品 ID、回报率命令和 DPI 上限；status 和 probe 可用。上面那个开关打开之前，所有写入都会被拒绝。",
-        ),
+        ("测试中", Icon::Warning, Status::Testing, "有用户读回验证了部分设置。要写入需要用户自己允许：接上鼠标后用上面的开关。"),
+        ("只读", Icon::Info, Status::ReadOnly, "已知产品 ID、回报率命令和 DPI 上限；status 和 probe 可用。上面那个开关打开之前，所有写入都会被拒绝。"),
     ];
     for (title, icon, st, text) in groups {
         let rows = device_models(st);
@@ -1585,11 +1542,7 @@ fn roadmap(f: &mut Form) {
     f.section("校准");
     f.status(Done, "智能追踪 1/2/3 毫米", "");
     f.status(Done, "非对称抬升", "抬起 2..26、落下 1..25，按雷云相同的顺序写入；适用于带 Focus Pro 追踪页的鼠标");
-    f.status(
-        Never,
-        "表面校准、鼠标垫预设",
-        "只在 Viper V3 Pro 上试过，雷云对它没有这项功能，固件也拒绝这些命令",
-    );
+    f.status(Never, "表面校准、鼠标垫预设", "只在 Viper V3 Pro 上试过，雷云对它没有这项功能，固件也拒绝这些命令");
     f.status(Partial, "读回当前校准", "非对称档位读不出来，所以选“保持当前”就维持原样");
 
     f.section("电源");
@@ -1603,17 +1556,13 @@ fn roadmap(f: &mut Form) {
     f.status(Done, "按键重映射", "鼠标布局里的每个按键，普通层和 Hypershift 层都有，保存在鼠标里");
     f.status(Done, "按键功能", "鼠标功能、带修饰键的键盘、多媒体、DPI 档位／循环、Hypershift、禁用");
     f.status(Done, "双击、连发、系统键", "双击、可设频率的连发、睡眠／关机／唤醒");
-    f.status(
-        Partial,
-        "配置切换按键",
-        "配置相关的功能可以绑到任意按键；只有在能存多套板载配置的鼠标上才有作用",
-    );
-    f.status(Done, "宏", "可以在这里录制，也可以在配置文件里写步骤；播放一次／N 次／按住重复／开关／序列。鼠标有宏存储时存在鼠标里，否则由托盘程序播放，和雷云一样");
+    f.status(Partial, "配置切换按键", "配置相关的功能可以绑到任意按键；只有在能存多套板载配置的鼠标上才有作用");
     f.status(
         Done,
-        "程序与文本按键",
-        "启动程序或打开文件／网址、输入文本；由托盘程序像宏一样播放。Windows 快捷键直接当键盘按键分配（win+d）",
+        "宏",
+        "可以在这里录制，也可以在配置文件里写步骤；播放一次／N 次／按住重复／开关／序列。鼠标有宏存储时存在鼠标里，否则由托盘程序播放，和雷云一样",
     );
+    f.status(Done, "程序与文本按键", "启动程序或打开文件／网址、输入文本；由托盘程序像宏一样播放。Windows 快捷键直接当键盘按键分配（win+d）");
 
     f.section("程序与设备");
     f.status(Done, "设置窗口，改动立即写入", "鼠标休眠时挂起，唤醒后写入");
@@ -1634,13 +1583,19 @@ fn roadmap(f: &mut Form) {
     f.section_icon("下个版本：已完成", Some(Icon::Checklist));
     f.bullet(ACCENT, "宏：在“自定义”页录制（按键、鼠标键、滚轮、间隔），用五种播放方式绑定。在没有宏存储的鼠标上由托盘程序通过 F13..F24 播放，和雷云一样；已验证：从鼠标读回了槽位按键，按键按下时宏被播放。");
     f.bullet(ACCENT, "游戏配置：每个程序单独的 DPI 档位、回报率和按键布局；已验证：记事本切到前台约 2 秒后回报率和按键被切换，关闭后又恢复。");
-    f.bullet(ACCENT, "接收器配对：在设置页和命令行里配对、取消、解除配对；已验证：已配对列表、配对模式的开启与取消（解除配对没有故意去试；这个接收器不支持自动配对）。");
+    f.bullet(
+        ACCENT,
+        "接收器配对：在设置页和命令行里配对、取消、解除配对；已验证：已配对列表、配对模式的开启与取消（解除配对没有故意去试；这个接收器不支持自动配对）。",
+    );
 
     f.section("上上个版本");
     f.bullet(MUTED, "双击、连发和系统键；带曲线编辑的动态灵敏度；X/Y 轴独立 DPI；板载配置选择；“校准”页按雷云的引擎为 Focus Pro 追踪页重建。");
 
     f.section_icon("以后", Some(Icon::Checklist));
-    f.bullet(BLUE, "程序与文本按键：用一个按键启动程序或输入文本，由托盘程序像宏一样播放。热插拔和唤醒后自动重连、配置文件被编辑后自动重新写入，以及每天检查一次更新。");
+    f.bullet(
+        BLUE,
+        "程序与文本按键：用一个按键启动程序或输入文本，由托盘程序像宏一样播放。热插拔和唤醒后自动重连、配置文件被编辑后自动重新写入，以及每天检查一次更新。",
+    );
     f.bullet(BLUE, "一张产品表，让共用这套协议的其它雷蛇鼠标不用改代码就能加入。");
     f.bullet(BLUE, "单文件签名下载。");
     f.bullet(MUTED, "支持带蓝牙的鼠标用蓝牙连接。");

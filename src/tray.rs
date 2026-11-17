@@ -450,11 +450,7 @@ impl App {
     /// Point the "start at login" entry at this executable again when it broke, and say so.
     unsafe fn repair_autostart(&mut self) {
         if crate::autostart::repair() {
-            self.notify(
-                "freenapse 重新开机启动了",
-                "开机启动项不见了，或指向了另一个 freenapse.exe。现在已经改成启动这一份。",
-                false,
-            );
+            self.notify("freenapse 重新开机启动了", "开机启动项不见了，或指向了另一个 freenapse.exe。现在已经改成启动这一份。", false);
         }
     }
 
