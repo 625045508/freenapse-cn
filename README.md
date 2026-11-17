@@ -12,11 +12,18 @@ DPI、回报率、按键、宏、传感器、电源和灯光设置全部存在�
 **简体中文分支**（基于上游 v0.5.1，界面与提示全部汉化，逻辑与协议未改动）。
 原版说明见 [README.en.md](README.en.md)。
 
+汉化工作由 **DeepSeek Harness** 完成：用它的代码工具链对全部 Rust 字符串字面量做了精确替换（931 处，
+不碰键值、宏名与协议字段），把界面字体换成 Microsoft YaHei，修好中文文案与 `starts_with`、
+按钮分类等逻辑的耦合，并用 `cargo test`（58 项）与逐页截图验收。编译出的单文件 exe 已附在
+[Releases](https://github.com/625045508/freenapse-cn/releases) 里，不用自己装 Rust。
+
 ---
 
 ## 直接使用（免安装）
 
-1. 把 `freenapse.exe` 放到一个固定目录，例如 `C:\Tools\freenapse\`。
+0. 从 [Releases](https://github.com/625045508/freenapse-cn/releases) 下载
+   `freenapse-cn-0.5.1.exe`（约 1.2 MB），需要的话改名成 `freenapse.exe`。
+1. 把它放到一个固定目录，例如 `C:\Tools\freenapse\`。
 2. 双击运行：默认在托盘里常驻，右键托盘图标就有菜单；想看设置窗口，点菜单里的
    **设置…**，或者用命令行 `freenapse.exe ui`。
 3. 想开机自动启动：设置页里打开 **开机启动**（只往注册表 `HKCU\...\Run` 写一条，不装服务）。
