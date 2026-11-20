@@ -34,6 +34,15 @@ DPI、回报率、按键、宏、传感器、电源和灯光设置全部存在�
 - 调试版新增 `FREENAPSE_TREAT_UNLISTED=1`，把鼠标当成表里没有的型号打开，
   方便在没有那只鼠标时试「未列出」的路径。
 
+### 发布方式
+
+CI（`.github/workflows/ci.yml`）只做 `cargo fmt --check`、`clippy -D warnings`、
+`cargo test` 和编译，产物作为 artifact 存档；**Release 由人工在网页上建**，
+这样发布说明能写成中文。步骤：同步上游 → 本地 `cargo build --release` 出 exe →
+把 `release/freenapse-cn-<版本>.exe` 挂到新 Release（标签 `v<版本>-cn`）。
+上游原本的「tag 自动发版」作业在本分支被移除，因为它的发布说明取自英文
+`CHANGELOG.md`，且 `-cn` 标签在 `CHANGELOG.md` 里没有对应小节。
+
 ---
 
 ## 直接使用（免安装）
