@@ -9,7 +9,7 @@
 DPI、回报率、按键、宏、传感器、电源和灯光设置全部存在鼠标自己的板载内存里。
 
 本仓库是 [MatthewSaintBull/freenapse](https://github.com/MatthewSaintBull/freenapse) 的
-**简体中文分支**（基于上游 v0.5.1，界面与提示全部汉化，逻辑与协议未改动）。
+**简体中文分支**（基于上游 v0.5.3，界面与提示全部汉化，逻辑与协议未改动）。
 原版说明见 [README.en.md](README.en.md)。
 
 汉化工作由 **DeepSeek Harness** 完成：用它的代码工具链对全部 Rust 字符串字面量做了精确替换（931 处，
@@ -17,12 +17,29 @@ DPI、回报率、按键、宏、传感器、电源和灯光设置全部存在�
 按钮分类等逻辑的耦合，并用 `cargo test`（58 项）与逐页截图验收。编译出的单文件 exe 已附在
 [Releases](https://github.com/625045508/freenapse-cn/releases) 里，不用自己装 Rust。
 
+### 与上游同步
+
+当前版本 **0.5.3**，对应上游 `MatthewSaintBull/freenapse` 的 `7b00013`（0.5.3 发布提交）。
+上游仓库已作为 `upstream` 远端接在本仓库历史里，以后的同步就是
+`git fetch upstream && git merge upstream/main`。
+
+0.5.3 相对 0.5.1 的内容（设备表部分已同步并汉化）：
+
+- **Viper V3 Pro SE**（有线 0x00DE / 接收器 0x00DF）进入已验证列表：两行都是经典回报率
+  命令，角度与动态灵敏度可读，8 个按键，一个板载配置；传感器跟踪写入还没人试过，
+  所以那一页仍然关闭。
+- **Basilisk V3 Pro**（有线 0x00AA）与 **Mouse Dock Pro**（0x00A4）已验证：13 个按键
+  （与 Basilisk V3 同一套默认值）、一个配置文件共用三条链路；dock 走 HyperPolling，
+  回报率上限 8000 Hz。
+- 调试版新增 `FREENAPSE_TREAT_UNLISTED=1`，把鼠标当成表里没有的型号打开，
+  方便在没有那只鼠标时试「未列出」的路径。
+
 ---
 
 ## 直接使用（免安装）
 
 0. 从 [Releases](https://github.com/625045508/freenapse-cn/releases) 下载
-   `freenapse-cn-0.5.1.exe`（约 1.2 MB），需要的话改名成 `freenapse.exe`。
+   `freenapse-cn-0.5.3.exe`（约 1.2 MB），需要的话改名成 `freenapse.exe`。
 1. 把它放到一个固定目录，例如 `C:\Tools\freenapse\`。
 2. 双击运行：默认在托盘里常驻，右键托盘图标就有菜单；想看设置窗口，点菜单里的
    **设置…**，或者用命令行 `freenapse.exe ui`。

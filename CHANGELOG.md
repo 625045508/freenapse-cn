@@ -1,5 +1,38 @@
 # Changelog
 
+## 0.5.3 (2026-11-18)
+
+- The Razer Basilisk V3 Pro is verified over its cable (product id 0x00AA)
+  and through the Mouse Dock Pro (0x00A4): its owner confirmed DPI stages,
+  the polling rate and a button assignment on both (issue 9), so freenapse
+  writes to it without the "Allow writes to this mouse" switch. Through the
+  dock 4000 Hz was set and read back; 8000 Hz, onboard macros and profile
+  switching were not tried. Through the HyperSpeed dongle (0x00AB) it stays
+  read-only.
+- The Mouse Dock Pro is in the device table, from that owner's probes: the
+  HyperPolling command up to 8000 Hz instead of the classic one. The mouse
+  was opened as an unlisted one through it before.
+- The Basilisk V3 Pro rows (cable 0x00AA, HyperSpeed dongle 0x00AB, dock)
+  get what the probes showed: the Basilisk V3's 13 buttons with the
+  scroll-mode button and the wheel tilts, no angle or Dynamic Sensitivity
+  controls, and one config file, `config-basilisk-v3-pro.toml`. Settings for
+  this mouse kept in `config.toml` are not carried over. `apply` over the
+  cable no longer ends with "device returned status Failure".
+
+## 0.5.2 (2026-11-17)
+
+- The Razer Viper V3 Pro SE is in the device table, from the probes its
+  owner posted (issue 8): product id 0x00DF through its HyperSpeed 1000 Hz
+  receiver and 0x00DE over the cable. Classic polling (125, 500, 1000 Hz),
+  35000 DPI, the common eight buttons, no macro memory.
+- It is verified on both connections: its owner confirmed DPI stages, the
+  polling rate and button assignments on the normal and the Hypershift
+  layer, through the receiver and over the cable, so freenapse writes to it
+  without the "Allow writes to this mouse" switch. Idle sleep, the
+  low-battery threshold, rotation and Dynamic Sensitivity were not tried on
+  that mouse, and the Calibration page is hidden until the tracking writes
+  have been tried.
+
 ## 0.5.1 (2026-11-16)
 
 - The Razer Basilisk V3 (product id 0x0099) is verified: its owner confirmed
